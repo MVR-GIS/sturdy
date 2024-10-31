@@ -1,0 +1,4 @@
+Table study {
+   id integer [primary key]
+}
+
