@@ -1,0 +1,12 @@
+---
+title: "data_model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{data_model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+library(sturdy)
+```
