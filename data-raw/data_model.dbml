@@ -1,4 +1,42 @@
-Table study {
-   id integer [primary key]
+Project sturdy {
+  database_type: 'PostgreSQL'
+  Note: 'A research study database.'
+}
+// : https://dbml.dbdiagram.io/docs
+
+
+Table sturdy.study {
+   id_study integer [primary key]
 }
 
+Table sturdy.question {
+   id_question integer [primary key]
+}
+
+Table sturdy.hypothesis {
+   id_hypothesis integer [primary key]
+}
+
+Table sturdy.design {
+   id_design integer [primary key]
+}
+
+Table sturdy.treatment {
+   id_treatment integer [primary key]
+}
+
+Table sturdy.measurement {
+   id_measurement integer [primary key]
+}
+
+Table sturdy.result {
+   id_result integer [primary key]
+}
+
+Table sturdy.conclusion {
+   id_conclusion integer [primary key]
+}
+
+Table sturdy.assessment {
+   id_assessment integer [primary key]
+}
