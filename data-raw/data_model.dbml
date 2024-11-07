@@ -1,42 +1,70 @@
 Project sturdy {
   database_type: 'PostgreSQL'
-  Note: 'A research study database.'
+  Note: '''
+  # `sturdy`
+  A research study database.
+  '''
 }
-// : https://dbml.dbdiagram.io/docs
+// https://dbdiagram.io/d/sturdy-672d401ee9daa85acab74544
+// https://dbdocs.io/mike.p.doc.71/sturdy?view=table_structure
 
 
-Table sturdy.study {
-   id_study integer [primary key]
-}
-
-Table sturdy.question {
-   id_question integer [primary key]
-}
-
-Table sturdy.hypothesis {
-   id_hypothesis integer [primary key]
+Table study {
+   id integer [primary key]
+   type study_type
 }
 
-Table sturdy.design {
-   id_design integer [primary key]
+Table question {
+   id integer [primary key]
+   study integer [ref: <> study.id]
 }
 
-Table sturdy.treatment {
-   id_treatment integer [primary key]
+Table hypothesis {
+   id integer [primary key]
+   question integer [ref: <> question.id]
 }
 
-Table sturdy.measurement {
-   id_measurement integer [primary key]
+Table design {
+   id integer [primary key]
+   hypothesis integer [ref: <> hypothesis.id]
 }
 
-Table sturdy.result {
-   id_result integer [primary key]
+Table treatment {
+   id integer [primary key]
+   design integer [ref: <> design.id]
 }
 
-Table sturdy.conclusion {
-   id_conclusion integer [primary key]
+Table measurement {
+   id integer [primary key]
+   treatment integer [ref: <> treatment.id]
 }
 
-Table sturdy.assessment {
-   id_assessment integer [primary key]
+Table result {
+   id integer [primary key]
+   measurement integer [ref: <> measurement.id]
+}
+
+Table conclusion {
+   id integer [primary key]
+   conclusion integer [ref: <> result.id]
+}
+
+Table assessment {
+   id integer [primary key]
+}
+
+
+enum study_type {
+   performance
+}
+
+TableGroup conceptual_model {
+   study
+   question
+   hypothesis
+   design
+   treatment
+   measurement
+   result
+   conclusion
 }
