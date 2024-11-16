@@ -10,61 +10,255 @@ Project sturdy {
 
 
 Table study {
-   id integer [primary key]
+   id integer [pk]
+   name string
+   description string
    type study_type
 }
 
 Table question {
-   id integer [primary key]
-   study integer [ref: <> study.id]
+   id integer [pk]
+   statement string
+   type question_type
 }
 
 Table hypothesis {
-   id integer [primary key]
-   question integer [ref: <> question.id]
+   id integer [pk]
+   statement string
+   type hypothesis_type
 }
 
 Table design {
-   id integer [primary key]
-   hypothesis integer [ref: <> hypothesis.id]
+   id integer [pk]
+   description string
+   type design_type
 }
 
 Table treatment {
-   id integer [primary key]
-   design integer [ref: <> design.id]
+   id integer [pk]
+   name string
+   type treatment_type
 }
 
-Table measurement {
-   id integer [primary key]
-   treatment integer [ref: <> treatment.id]
+Table observation {
+   id integer [pk]
+   type observation_type
+   data url
 }
 
-Table result {
-   id integer [primary key]
-   measurement integer [ref: <> measurement.id]
+Table finding {
+   id integer [pk]
+   statement string
+   type finding_type
 }
 
 Table conclusion {
-   id integer [primary key]
-   conclusion integer [ref: <> result.id]
+   id integer [pk]
+   statement string
+   type conclusion_type
 }
 
 Table assessment {
-   id integer [primary key]
+   id integer [pk]
+   statement string
+   type assessment_type
 }
 
+Table project {
+  id integer [pk]
+  name string
+  description string
+  type project_type
+}
+
+Table objective {
+  id integer [pk]
+  statement string
+  type objective_type
+}
+
+Table feature {
+  id integer [pk]
+  type feature_type
+  sub_type feature_subtype
+}
+
+Table criteria {
+  id integer [pk]
+  statement string
+  type criteria_type
+}
+
+Table monitoring_event {
+  id integer [pk]
+  date date
+  type monitoring_event_type
+}
+
+// Relationships
+Table study_question {
+  id integer [pk]
+  study_id integer [ref: - study.id]
+  relation relation_type
+  question_id integer [ref: - question.id]
+}
+
+Table question_hypothesis {
+  id integer [pk]
+  question_id integer [ref: - question.id]
+  relation relation_type
+  hypothesis_id integer [ref: - hypothesis.id]
+}
+
+Table hypothesis_design {
+  id integer [pk]
+  hypothesis_id integer [ref: - hypothesis.id]
+  relation relation_type
+  design_id integer [ref: - design.id]
+}
+
+Table design_treatment {
+  id integer [pk]
+  design_id integer [ref: - design.id]
+  relation relation_type
+  treatment_id integer [ref: - treatment.id]
+}
+
+Table project_objective {
+  id integer [pk]
+  project_id integer [ref: - project.id]
+  relation relation_type
+  objective_id integer [ref: - objective.id]
+}
+
+Table project_feature {
+  id integer [pk]
+  project_id integer [ref: - project.id]
+  relation relation_type
+  feature_id integer [ref: - feature.id]
+}
+
+Table objective_criteria {
+  id integer [pk]
+  objective_id integer [ref: - objective.id]
+  relation relation_type
+  criteria_id integer [ref: - criteria.id]
+}
+
+Table project_monitoring_event {
+  id integer [pk]
+  project_id integer [ref: - project.id]
+  relation relation_type
+  monitoring_event_id integer [ref: - monitoring_event.id]
+}
+
+Table treatment_feature {
+  id integer [pk]
+  treatment_id integer [ref: - treatment.id]
+  relation relation_type
+  feature_id integer [ref: - feature.id]
+}
+
+Table monitoring_event_observation {
+  id integer [pk]
+  monitoring_event_id integer [ref: - monitoring_event.id]
+  relation relation_type
+  observation_id integer [ref: - observation.id]
+}
+
+Table treatment_observation {
+  id integer [pk]
+  treatment_id integer [ref: - treatment.id]
+  relation relation_type
+  observation_id integer [ref: - observation.id]
+}
+
+Table observation_finding {
+  id integer [pk]
+  observation_id integer [ref: - observation.id]
+  relation relation_type
+  finding_id integer [ref: - finding.id]
+}
+
+Table finding_conclusion {
+  id integer [pk]
+  finding_id integer [ref: - finding.id]
+  relation relation_type
+  conclusion_id integer [ref: - conclusion.id]
+}
+
+Table assessment_conclusion {
+  id integer [pk]
+  assessment_id integer [ref: - assessment.id]
+  relation relation_type
+  conclusion_id integer [ref: - conclusion.id]
+}
+
+
+//Define semantic relationships
+enum relation_type {
+  has
+  parent_of
+  child_of
+}
+
+enum question_type {
+  tbd
+}
+
+enum hypothesis_type {
+  tbd
+}
 
 enum study_type {
    performance
 }
 
-TableGroup conceptual_model {
-   study
-   question
-   hypothesis
-   design
-   treatment
-   measurement
-   result
-   conclusion
+enum design_type {
+  observational
+  experimental
+}
+
+enum finding_type {
+  tbd
+}
+
+enum feature_type {
+  dredging
+}
+
+enum feature_subtype {
+  dredging_access
+}
+
+enum treatment_type {
+  tbd
+}
+
+enum observation_type {
+  tbd
+}
+
+enum conclusion_type {
+  tbd
+}
+
+enum assessment_type {
+  tbd
+}
+
+enum project_type {
+  tbd
+}
+
+enum objective_type {
+  tbd
+}
+
+enum criteria_type {
+  tbd
+}
+
+enum monitoring_event_type {
+  tbd
 }
