@@ -10,3 +10,26 @@ vignette: >
 ```{r setup}
 library(sturdy)
 ```
+
+## Knowledge Graphs
+
+[kgraph](https://cran.r-project.org/web//packages/kgraph/vignettes/kgraph.html)
+[r-universe/kgraph](https://thomaschln.r-universe.dev/kgraph)
+
+## Semantic Annotation
+
+[EML reccomended Ontologies](https://eml.ecoinformatics.org/semantic-annotation-primer#external-vocabularies)
+
+### RDF in R
+[RDF Intro](https://cran.r-project.org/web/packages/rdflib/vignettes/rdf_intro.html)
+
+[rdflib](https://docs.ropensci.org/rdflib)
+
+## Open Knowledge Maps(OKM)
+
+[OKM Headstart](https://github.com/OpenKnowledgeMaps/Headstart)
+
+
+## Ecological Metadata Language (EML)
+
+[EML](https://docs.ropensci.org/EML/index.html)
