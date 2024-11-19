@@ -7,9 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup}
-library(sturdy)
-```
+# Background
 
 ## Knowledge Graphs
 
@@ -33,3 +31,5 @@ library(sturdy)
 ## Ecological Metadata Language (EML)
 
 [EML](https://docs.ropensci.org/EML/index.html)
+
+

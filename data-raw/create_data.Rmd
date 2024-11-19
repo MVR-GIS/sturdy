@@ -1,0 +1,127 @@
+---
+title: "create_data"
+output: html_document
+---
+
+
+```{r}
+library(DBI)
+library(duckdb)
+library(stringr)
+library(uuid)
+```
+
+# Create DB schema
+```{r}
+# Create connection
+con <- dbConnect(drv = duckdb(), dbdir = "sturdy.duckdb", read_only = FALSE)
+```
+
+```{r}
+# Read SQL DDL from file
+ddl <- readr::read_file(file = "sturdy_duckdb.sql")
+
+# Excute DDL SQL
+dbExecute(con, ddl)
+```
+
+## Check duckdb settings
+[DuckDB_% Metadata Functions](https://duckdb.org/docs/sql/meta/duckdb_table_functions.html)
+```{r}
+duckdb_settings <- dbGetQuery(con, "FROM duckdb_settings()")
+duckdb_constraints <- dbGetQuery(con, "FROM duckdb_constraints()")
+```
+
+```{r}
+dbGetQuery(con, "SHOW ALL TABLES")
+```
+
+```{r}
+dbGetQuery(con, "DESCRIBE hypothesis")
+```
+
+# Create example data
+
+## SQL INSERT method
+```{r}
+# Create some test data in study
+ins <- str_glue(
+  "INSERT INTO study VALUES(uuid(), '{name}', '{description}', '{type}')",
+  name = "Study 1",
+  description = "A really great study",
+  type = "journal")
+dbExecute(con, ins)
+
+ins <- str_glue(
+  "INSERT INTO study VALUES(uuid(), '{name}', '{description}', '{type}')",
+  name = "Study 2",
+  description = "Another really great study",
+  type = "journal")
+dbExecute(con, ins)
+
+# Delete all rows from db table
+# dbExecute(con, "TRUNCATE study")
+
+study <- dbGetQuery(con, "FROM study")
+```
+
+```{r}
+# Create some test data in question
+ins <- str_glue(
+  "INSERT INTO question VALUES(uuid(), '{statement}', '{type}')",
+  statement = "What is the average rainfall of the Amazon Basin?",
+  type = "question")
+dbExecute(con, ins)
+
+ins <- str_glue(
+  "INSERT INTO question VALUES(uuid(), '{statement}', '{type}')",
+  statement = "What is the speed of an African swallow?",
+  type = "question")
+dbExecute(con, ins)
+
+# Delete all rows from db table
+# dbExecute(con, "TRUNCATE question")
+
+question <- dbGetQuery(con, "FROM question")
+```
+
+```{r}
+# Create some test data in study_question
+ins <- str_glue(
+  "INSERT INTO study_question VALUES(uuid(), '{study_id}', '{relation}', '{question_id}')",
+  study_id = dplyr::filter(study, name == "Study 1")$id,
+  relation = "has",
+  question_id = dplyr::filter(question, str_like(statement, "%Amazon Basin%"))$id)
+dbExecute(con, ins)
+ins <- str_glue(
+  "INSERT INTO study_question VALUES(uuid(), '{study_id}', '{relation}', '{question_id}')",
+  study_id = dplyr::filter(study, name == "Study 1")$id,
+  relation = "has",
+  question_id = dplyr::filter(question, str_like(statement, "%African swallow%"))$id)
+dbExecute(con, ins)
+
+# Delete all rows from db table
+# dbExecute(con, "TRUNCATE study_question")
+
+study_question <- dbGetQuery(con, "FROM study_question")
+```
+
+## Bulk data.frame append
+```{r}
+hypothesis_df <- data.frame(
+  id = UUIDgenerate(n = 2, output = "string"),
+  statement = c("hypothesis 1", "hypothesis 2"),
+  type = c("hypothesis", "hypothesis")
+)
+
+dbWriteTable(con, "hypothesis", hypothesis_df, append = TRUE, row.names = FALSE)
+
+dbGetQuery(con, "DESCRIBE hypothesis")
+
+hypothesis <- dbGetQuery(con, "FROM hypothesis")
+```
+
+
+```{r}
+dbDisconnect(con, shutdown = TRUE)
+```
